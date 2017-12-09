@@ -5,6 +5,7 @@ import { createContainer } from "meteor/react-meteor-data";
 import Navigation from "./Navigation.jsx";
 import Footer from "./Footer.jsx";
 import Menu from "./Menu.jsx";
+import Content from "./Content.jsx";
 
 import "./App.css";
 
