@@ -14,42 +14,80 @@ class App extends Component {
     super(props);
   }
 
-  loadSdkAsynchronously() {
+  loadFbLoginApi() {
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId: process.env.REACT_APP_APPID,
+        xfbml: true,
+        cookie: true,
+        version: "v2.11"
+      });
+    };
+    console.log("fuck");
+    console.log("meeen"+process.env.REACT_APP_APPID)
+    console.log("Loading fb api");
+    // Load the SDK asynchronously
     ((d, s, id) => {
       const element = d.getElementsByTagName(s)[0];
       const fjs = element;
       let js = element;
-      if (d.getElementById(id)) { return; }
-      js = d.createElement(s); js.id = id;
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
       js.src = `https://connect.facebook.net/en_US/sdk.js`;
       fjs.parentNode.insertBefore(js, fjs);
-    })(document, 'script', 'facebook-jssdk');
+    })(document, "script", "facebook-jssdk");
   }
 
-  setFbAsyncInit() {
-    const { appId, xfbml, cookie, version, autoLoad } = this.props;
-    window.fbAsyncInit = () => {
-      window.FB.init({
-        appId : "hol",
-        xfbml : true,
-        cookie : true
-      });
-      this.setStateIfMounted({ isSdkLoaded: true });
-      if (autoLoad || window.location.search.includes('facebookdirect')) {
-        window.FB.getLoginStatus(this.checkLoginAfterRefresh);
-      }
-    };
+  statusChangeCallback(response) {
+    console.log("statusChangeCallback");
+    console.log(response);
+    if (response.status === "connected") {
+      this.testAPI();
+    } else if (response.status === "not_authorized") {
+      console.log("Please log into this app.");
+    } else {
+      console.log("Please log into this facebook.");
+    }
+  }
+
+  testAPI() {
+    console.log("Welcome!  Fetching your information.... ");
+    FB.api("/me", function(response) {
+      console.log("Successful login for: " + response.name);
+      document.getElementById("status").innerHTML =
+        "Thanks for logging in, " + response.name + "!";
+    });
+  }
+
+  checkLoginState() {
+    FB.getLoginStatus(
+      function(response) {
+        this.statusChangeCallback(response);
+      }.bind(this)
+    );
+  }
+
+  handleFBLogin() {
+    FB.login(this.checkLoginState);
   }
 
   componentDidMount() {
-    console.log(process.env.APPID);
-    loadSdkAsynchronously()
+    this.loadFbLoginApi();
   }
 
   render() {
     return (
       <div className="app">
         <Navigation />
+        <button
+          className="btn-facebook"
+          id="btn-social-login"
+          onClick={this.handleFBLogin}>
+          <span className="fa fa-facebook" /> Sign in with Facebook
+        </button>
         <Content />
         <Footer />
       </div>
@@ -57,11 +95,8 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
-};
+App.propTypes = {};
 
 export default createContainer(() => {
-  return {
-    
-  };
+  return {};
 }, App);
