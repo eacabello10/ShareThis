@@ -13,6 +13,7 @@ class Navigation extends Component {
           <a className="navbar-brand" href="#">
             Start Bootstrap
           </a>
+          HOLA
           <button
             className="navbar-toggler"
             type="button"
@@ -50,7 +51,6 @@ class Navigation extends Component {
 }
 
 Navigation.propTypes = {
-  user: PropTypes.object
 };
 
 export default Navigation;

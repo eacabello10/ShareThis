@@ -12,3 +12,8 @@ body {
 .card {
   height: 100%;
 }
+
+/* CSS declarations go here */
+#render-target {
+	background: #F2F5EA;
+}
