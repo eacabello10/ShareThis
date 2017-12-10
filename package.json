@@ -2,9 +2,10 @@
   "name": "sharethisgame",
   "private": true,
   "scripts": {
-    "start": "meteor run",
+    "start": "set:env && cross-env env-cmd .env meteor run",
     "lint": "eslint .",
-    "pretest": "npm run lint --silent"
+    "pretest": "npm run lint --silent",
+    "set:env": "node setenv.js > .env"
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
@@ -16,6 +17,8 @@
   "devDependencies": {
     "@meteorjs/eslint-config-meteor": "^1.0.5",
     "babel-eslint": "^8.0.3",
+    "cross-env": "^5.1.1",
+    "env-cmd": "^7.0.0",
     "eslint": "^4.13.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-meteor": "^0.4.0",

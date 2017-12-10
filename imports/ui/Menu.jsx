@@ -28,8 +28,6 @@ class Menu extends Component {
 }
 
 Menu.propTypes = {
-    change : PropTypes.func.isRequired,
-    info : PropTypes.object
 };
 
 export default Menu;

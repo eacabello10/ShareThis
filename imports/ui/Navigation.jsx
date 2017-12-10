@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import AccountsUIWrapper from "./AccountsUIWrapper.jsx";
-
-import "./Navigation.css";
-
 class Navigation extends Component {
   constructor(props) {
     super(props);
