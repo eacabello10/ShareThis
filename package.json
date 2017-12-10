@@ -2,10 +2,10 @@
   "name": "sharethisgame",
   "private": true,
   "scripts": {
-    "start": "set:env && cross-env env-cmd .env meteor run",
+    "start": "cross-env set:env && cross-env .env && meteor build",
     "lint": "eslint .",
     "pretest": "npm run lint --silent",
-    "set:env": "node setenv.js > .env"
+    "set:env": "node ./config/sentenv.js > .env"
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
