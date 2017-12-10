@@ -13,7 +13,6 @@ class Navigation extends Component {
           <a className="navbar-brand" href="#">
             Start Bootstrap
           </a>
-          HOLA
           <button
             className="navbar-toggler"
             type="button"
