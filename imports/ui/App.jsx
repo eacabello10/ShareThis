@@ -12,33 +12,39 @@ import "./App.css";
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state={
+      
+    }
   }
 
   loadFbLoginApi() {
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId: process.env.REACT_APP_APPID,
-        xfbml: true,
-        cookie: true,
-        version: "v2.11"
-      });
-    };
-    console.log("fuck");
-    console.log("meeen"+process.env.REACT_APP_APPID)
-    console.log("Loading fb api");
-    // Load the SDK asynchronously
-    ((d, s, id) => {
-      const element = d.getElementsByTagName(s)[0];
-      const fjs = element;
-      let js = element;
-      if (d.getElementById(id)) {
-        return;
-      }
-      js = d.createElement(s);
-      js.id = id;
-      js.src = `https://connect.facebook.net/en_US/sdk.js`;
-      fjs.parentNode.insertBefore(js, fjs);
-    })(document, "script", "facebook-jssdk");
+    Meteor.call("env.getId",(error, result)=>{
+      process.env.REACT_APP_APPID = result
+      window.fbAsyncInit = () => {
+        FB.init({
+          appId: result,
+          xfbml: true,
+          cookie: true,
+          version: "v2.11"
+        });
+      };
+      console.log("fuck");
+      console.log("meeen"+result)
+      console.log("Loading fb api");
+      // Load the SDK asynchronously
+      ((d, s, id) => {
+        const element = d.getElementsByTagName(s)[0];
+        const fjs = element;
+        let js = element;
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = `https://connect.facebook.net/en_US/sdk.js`;
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "facebook-jssdk");
+    });
   }
 
   statusChangeCallback(response) {
@@ -74,7 +80,7 @@ class App extends Component {
     FB.login(this.checkLoginState);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.loadFbLoginApi();
   }
 
