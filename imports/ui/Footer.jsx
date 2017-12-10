@@ -22,9 +22,6 @@ class Footer extends Component {
 }
 
 Footer.propTypes = {
-  help: PropTypes.number.isRequired,
-  posted: PropTypes.number.isRequired,
-  rooms: PropTypes.number.isRequired
 };
 
 export default Footer;

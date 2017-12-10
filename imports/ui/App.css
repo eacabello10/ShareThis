@@ -1,37 +1,14 @@
-* {
-  box-sizing: border-box
-}
-
-.footInfo {
-  color : #e4f1fe;
-  background-color: #1F2041;
-  font-size: 12px;
-  margin-top: 10px;
-  position: fixed;
-  height: 50px;
-  bottom: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.navigationBar {
-  position: fixed;
-  width: 100%;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  clear: both;
-  z-index: 1000;
-}
-
-.postViewer {
-  padding-top: 100px;
-  left : 230px;
-}
-
-.menu {
-  position: fixed;
-  left : 0px;
-  top : 50px;
-}
-
+/* CSS declarations go here */
+body {
+    padding-top: 54px;
+  }
+  
+  @media (min-width: 992px) {
+    body {
+      padding-top: 56px;
+    }
+  }
+  
+  .card {
+    height: 100%;
+  }
