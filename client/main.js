@@ -1,10 +1,15 @@
 import React from "react";
-import {Meteor} from "meteor/meteor";
-import {render} from "react-dom";
+import { render } from "react-dom";
+import { BrowserRouter, Route } from 'react-router-dom';
 
 //Import del imports/ui
 import App from "../imports/ui/containers/App.jsx";
 
-Meteor.startup(()=> {
-  render(<App />, document.getElementById("render-target"));
+Meteor.startup(() => {
+  $('html').attr('lang', 'es');
+  render((
+    <BrowserRouter>
+      <Route component={App} />
+    </BrowserRouter>
+  ), document.getElementById("render-target"));
 });
