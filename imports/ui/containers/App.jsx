@@ -2,34 +2,35 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { createContainer } from "meteor/react-meteor-data";
 
-import Navigation from "./Navigation.jsx";
-import Footer from "./Footer.jsx";
-import Menu from "./Menu.jsx";
-import Content from "./Content.jsx";
+import Navigation from "./components/Navigation.jsx";
+import Footer from "./components/Footer.jsx";
+import Menu from "./components/Menu.jsx";
+import Content from "./components/Content.jsx";
 
 import "./App.css";
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state={
-      
-    }
+    this.state = {
+      loged: false
+    };
   }
 
   loadFbLoginApi() {
-    Meteor.call("env.getId",(error, result)=>{
-      process.env.REACT_APP_APPID = result
+    Meteor.call("env.getId", (error, result) => {
+      process.env.REACT_APP_APPID = result;
       window.fbAsyncInit = () => {
         FB.init({
-          appId: result,
-          xfbml: true,
+          appId: 153016145332580,
+          xfbml: false,
           cookie: true,
-          version: "v2.11"
+          version: "v2.11",
+          scope: "public_profile,user_friends,publish_actions"
         });
       };
       console.log("fuck");
-      console.log("meeen"+result)
+      console.log("meeen" + result);
       console.log("Loading fb api");
       // Load the SDK asynchronously
       ((d, s, id) => {
@@ -52,16 +53,19 @@ class App extends Component {
     console.log(response);
     if (response.status === "connected") {
       this.testAPI();
+      this.setState({ loged: true });
     } else if (response.status === "not_authorized") {
       console.log("Please log into this app.");
     } else {
       console.log("Please log into this facebook.");
+      this.setState({ loged: false });
     }
   }
 
   testAPI() {
     console.log("Welcome!  Fetching your information.... ");
     FB.api("/me", function(response) {
+      console.log(response);
       console.log("Successful login for: " + response.name);
       document.getElementById("status").innerHTML =
         "Thanks for logging in, " + response.name + "!";
@@ -69,31 +73,38 @@ class App extends Component {
   }
 
   checkLoginState() {
-    FB.getLoginStatus(
-      function(response) {
-        this.statusChangeCallback(response);
-      }.bind(this)
-    );
+    console.log("meeenod");
+    FB.getLoginStatus(response => {
+      console.log(response);
+      this.statusChangeCallback(response);
+    });
   }
 
   handleFBLogin() {
-    FB.login(this.checkLoginState);
+    console.log("in");
+    FB.login(this.checkLoginState.bind(this));
+  }
+
+  handleFBLogout() {
+    console.log("out");
+    FB.logout(this.checkLoginState.bind(this));
   }
 
   componentWillMount() {
     this.loadFbLoginApi();
   }
 
+  componentDidMount() {}
+
   render() {
     return (
       <div className="app">
-        <Navigation />
-        <button
-          className="btn-facebook"
-          id="btn-social-login"
-          onClick={this.handleFBLogin}>
-          <span className="fa fa-facebook" /> Sign in with Facebook
-        </button>
+        <Navigation
+          login={this.handleFBLogin.bind(this)}
+          logout={this.handleFBLogout.bind(this)}
+          isLoged={this.state.loged}
+        />
+        <p id="status" />
         <Content />
         <Footer />
       </div>

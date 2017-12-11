@@ -2,7 +2,7 @@
   "name": "sharethisgame",
   "private": true,
   "scripts": {
-    "start": "cross-env set:env && cross-env .env && meteor build",
+    "start": "cross-env set:env && cross-env .env && meteor run",
     "lint": "eslint .",
     "pretest": "npm run lint --silent",
     "set:env": "node ./config/sentenv.js > .env"

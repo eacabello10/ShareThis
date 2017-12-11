@@ -11,7 +11,7 @@ class Navigation extends Component {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div className="container">
           <a className="navbar-brand" href="#">
-            Start Bootstrap
+            Exchange this game!
           </a>
           <button
             className="navbar-toggler"
@@ -20,8 +20,7 @@ class Navigation extends Component {
             data-target="#navbarResponsive"
             aria-controls="navbarResponsive"
             aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
+            aria-label="Toggle navigation">
             <span className="navbar-toggler-icon" />
           </button>
           <div className="collapse navbar-collapse" id="navbarResponsive">
@@ -32,6 +31,11 @@ class Navigation extends Component {
                   <span className="sr-only">(current)</span>
                 </a>
               </li>
+              {this.props.isLoged ? <li className="nav-item">
+                <a className="nav-link" href="#" onClick={this.props.logout}>Logout</a>
+              </li>:<li className="nav-item">
+                <a className="nav-link" href="#" onClick={this.props.login}>Login</a>
+              </li>} 
               <li className="nav-item">
                 <a className="nav-link" href="#">About</a>
               </li>
