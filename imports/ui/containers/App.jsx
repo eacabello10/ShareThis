@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { createContainer } from "meteor/react-meteor-data";
 
-import Navigation from "./components/Navigation.jsx";
-import Footer from "./components/Footer.jsx";
-import Menu from "./components/Menu.jsx";
-import Content from "./components/Content.jsx";
+import Navigation from "../components/Navigation.jsx";
+import Footer from "../components/Footer.jsx";
+import Menu from "../components/Menu.jsx";
+import Content from "../components/Content.jsx";
 
 import "./App.css";
 
@@ -15,7 +15,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loged: false
+      loged: false,
+      "topGames": []
     };
   }
 
@@ -51,21 +52,19 @@ class App extends Component {
   }
 
   testGameAPI() {
-    //gameClient.platforms({fields: "*"}).then(response => {console.log(response.body)}).catch(error => {throw error;});
-    /*var proxyUrl = "https://cors-anywhere.herokuapp.com/",
-    targetUrl = "https://api-2445582011268.apicast.io/platforms/?fields=<name></name>"
-    HTTP.get(proxyUrl+targetUrl, {
-      headers: {
-        "user-key" : "3f33fc8eff221f5bf3df8d6e26704ca3",
-        "Accept" : "application/json"
-      }}, function(error, response) {
-        if (error) {
-      console.log(error);
-    } else {
-      console.log(response);
-    }
-      });*/
-      Meteor.call("games.getGameByName", {name: "zelda"}, (err, res)  => { if (err) {alert(err)} else {console.log("it works!")}});
+    Meteor.call("games.getGameByName", {name: "zelda"}, 
+        (err, res)  => { 
+          if (err) {
+            alert(err)
+          } else 
+            {
+              console.log(res.body[0].cover.url)
+              this.setState({
+                "topGames": res.body
+              });
+              }
+            }
+        );
   }
 
   statusChangeCallback(response) {
@@ -112,6 +111,7 @@ class App extends Component {
 
   componentWillMount() {
     this.loadFbLoginApi();
+    this.testGameAPI();
   }
 
   componentDidMount() {}
@@ -119,15 +119,14 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <Navigation />
-        <button
-          className="btn-facebook"
-          id="btn-social-login"
-          onClick={this.handleFBLogin}>
-          <span className="fa fa-facebook" /> Sign in with Facebook
-        </button>
+        <Navigation
+          login={this.handleFBLogin.bind(this)}
+          logout={this.handleFBLogout.bind(this)}
+          isLoged={this.state.loged}
+        />
+        <p id="status" />
         <button id="testAPIbut" onClick={this.testGameAPI}>Test Game API</button>
-        <Content />
+        <Content topGames = {this.state.topGames} />
         <Footer />
       </div>
     );

@@ -7,20 +7,15 @@ class Content extends Component {
   }
 
   render() {
+    console.log(this.props.topGames[0]);
     return (
       <div className="content">
         <div className="container">
           <header className="jumbotron my-4">
-            <h1 className="display-3">A Warm Welcome!</h1>
+            <h1 className="display-3">Welcome to ShareThisGame!</h1>
             <p className="lead">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa,
-              ipsam, eligendi, in quo sunt possimus non incidunt odit vero
-              aliquid similique quaerat nam nobis illo aspernatur vitae fugiat
-              numquam repellat.
+              ShareThisGame is a Website where you can arrange your game library and change games with other users.
             </p>
-            <a href="#" className="btn btn-primary btn-lg">
-              Call to action!
-            </a>
           </header>
 
           <div className="row text-center">
