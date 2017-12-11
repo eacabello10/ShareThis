@@ -7,7 +7,7 @@ class Content extends Component {
   }
 
   render() {
-    console.log(this.props.topGames[0]);
+    console.log(this.props.topGames[0].cover.url);
     return (
       <div className="content">
         <div className="container">
