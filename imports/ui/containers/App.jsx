@@ -1,16 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { createContainer } from "meteor/react-meteor-data";
-
 import { Switch, Route, Link, Redirect } from 'react-router-dom';
-
 import Navigation from "../components/Navigation.jsx";
-import Perfil from "../containers/Perfil.jsx";
 import Footer from "../components/Footer.jsx";
 import Menu from "../components/Menu.jsx";
-import Content from "../components/Content.jsx";
-
+import Perfil from "../containers/Perfil.jsx";
 import NotFound from "../components/NotFound.jsx";
+import Content from "../components/Content.jsx";
 
 import "./App.css";
 
@@ -71,13 +68,13 @@ class App extends Component {
 
   statusChangeCallback(response) {
     if (response.status === "connected") {
-      console.log(response);
       this.getUser();
       this.setState({
         loged: true,
         token: response.accessToken
       });
-      this.handleFBGetFriends()
+      this.testGameAPI();
+      this.handleFBGetFriends();
     } else if (response.status === "not_authorized") {
       console.log("Please log into this app.");
     } else {
@@ -87,13 +84,7 @@ class App extends Component {
   }
 
   getUser() {
-    FB.api("/me", 'get', { access_token: this.state.token, fields: 'access_token' }, (response) => {
-      this.setState({ user: response })
-      console.log("token");
-      console.log(response);
-      document.getElementById("status").innerHTML = response.name;
-    });
-    FB.api("/me", 'get', { access_token: this.state.token, fields: 'id,name,profile_pic' }, (response) => {
+    FB.api("/me", (response) => {
       this.setState({ user: response })
       console.log("user");
       console.log(response);
@@ -109,6 +100,7 @@ class App extends Component {
 
   handleFBLogin() {
     console.log("in");
+    
     FB.login(this.checkLoginState.bind(this));
   }
 
@@ -133,34 +125,13 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <Switch>
-          <Redirect exact from="/" to="/inicio"></Redirect>
-          <Route path="/inicio" render={(routeProps) =>
-            <div>
-              <Navigation
-                login={this.handleFBLogin.bind(this)}
-                logout={this.handleFBLogout.bind(this)}
-                isLoged={this.state.loged} />
-              <button id="testAPIbut" onClick={this.testGameAPI.bind(this)}>Test Game API</button>
-              <Content topGames={this.state.topGames} />
-              <Footer />
-            </div>
-          } />
-          {this.state.user ?
-            <Route path='/perfil' render={(routeProps) =>
-              <div>
-                <Navigation
-                  login={this.handleFBLogin.bind(this)}
-                  logout={this.handleFBLogout.bind(this)}
-                  isLoged={this.state.loged} />
-                <Perfil {...routeProps}
-                  user={this.state.user} />
-                <Footer />
-              </div>
-            } />
-            : ""}
-          <Route path="*" component={NotFound}></Route>
-        </Switch>
+        <Navigation
+          login={this.handleFBLogin.bind(this)}
+          logout={this.handleFBLogout.bind(this)}
+          isLoged={this.state.loged} />
+        <button id="testAPIbut" onClick={this.testGameAPI.bind(this)}>Test Game API</button>
+        <Content topGames={this.state.topGames} />
+        <Footer />
       </div>
     );
   }
