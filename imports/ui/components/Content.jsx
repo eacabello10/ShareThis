@@ -7,6 +7,7 @@ class Content extends Component {
   }
 
   render() {
+    console.log(this.props.topGames[0]);
     return (
       <div className="content">
         <div className="container">
@@ -15,27 +16,16 @@ class Content extends Component {
             <p className="lead">
               ShareThisGame is a Website where you can arrange your game library and change games with other users.
             </p>
-            <a href="#" className="btn btn-primary btn-lg">
-              Call to action!
-            </a>
           </header>
 
           <div className="row text-center">
             <div className="col-lg-3 col-md-6 mb-4">
               <div className="card">
-                {this.props.topGames ?
-                <img
-                  className="card-img-top"
-                  src={this.props.topGames[0].cover.url} 
-                  alt=""
-                />
-                :
                 <img
                   className="card-img-top"
                   src="http://placehold.it/500x325"
                   alt=""
                 />
-              }
                 <div className="card-body">
                   <h4 className="card-title">Card title</h4>
                   <p className="card-text">

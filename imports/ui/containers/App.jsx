@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { createContainer } from "meteor/react-meteor-data";
 
-import Navigation from "./components/Navigation.jsx";
-import Footer from "./components/Footer.jsx";
-import Menu from "./components/Menu.jsx";
-import Content from "./components/Content.jsx";
+import Navigation from "../components/Navigation.jsx";
+import Footer from "../components/Footer.jsx";
+import Menu from "../components/Menu.jsx";
+import Content from "../components/Content.jsx";
 
 import "./App.css";
 
@@ -58,7 +58,7 @@ class App extends Component {
             alert(err)
           } else 
             {
-              console.log(res.body)
+              console.log(res.body[0].cover.url)
               this.setState({
                 "topGames": res.body
               });
@@ -111,6 +111,7 @@ class App extends Component {
 
   componentWillMount() {
     this.loadFbLoginApi();
+    this.testGameAPI();
   }
 
   componentDidMount() {}
@@ -125,7 +126,7 @@ class App extends Component {
         />
         <p id="status" />
         <button id="testAPIbut" onClick={this.testGameAPI}>Test Game API</button>
-        <Content />
+        <Content topGames = {this.state.topGames} />
         <Footer />
       </div>
     );
