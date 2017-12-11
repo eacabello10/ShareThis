@@ -16,6 +16,11 @@ Meteor.methods({
     },
     "user.find" (userId) {
     },
-    "user.addChat"(chatId){
+    "user.addGame"(name){
+        check(name,String);
+        Meteor.call("games.getGameByName", {name}, (err,res) => {
+            
+        });
+
     }
 });

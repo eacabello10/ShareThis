@@ -2,10 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { createContainer } from "meteor/react-meteor-data";
 
+import { Switch, Route, Link, Redirect } from 'react-router-dom';
+
 import Navigation from "../components/Navigation.jsx";
+import Perfil from "../containers/Perfil.jsx";
 import Footer from "../components/Footer.jsx";
 import Menu from "../components/Menu.jsx";
 import Content from "../components/Content.jsx";
+
+import NotFound from "../components/NotFound.jsx";
 
 import "./App.css";
 
@@ -31,7 +36,7 @@ class App extends Component {
           xfbml: false,
           cookie: true,
           version: "v2.11",
-          scope: "public_profile,user_friends,publish_actions"
+          scope: "public_profile,user_friends,publish_actions,manage_pages"
         });
       };
       // Load the SDK asynchronously
@@ -66,9 +71,13 @@ class App extends Component {
 
   statusChangeCallback(response) {
     if (response.status === "connected") {
+      console.log(response);
       this.getUser();
-      this.setState({ loged: true });
-      +     this.handleFBGetFriends()
+      this.setState({
+        loged: true,
+        token: response.accessToken
+      });
+      this.handleFBGetFriends()
     } else if (response.status === "not_authorized") {
       console.log("Please log into this app.");
     } else {
@@ -78,10 +87,17 @@ class App extends Component {
   }
 
   getUser() {
-    FB.api("/me", (response) => {
+    FB.api("/me", 'get', { access_token: this.state.token, fields: 'access_token' }, (response) => {
       this.setState({ user: response })
-      document.getElementById("status").innerHTML =
-        "Thanks for logging in, " + response.name + "!";
+      console.log("token");
+      console.log(response);
+      document.getElementById("status").innerHTML = response.name;
+    });
+    FB.api("/me", 'get', { access_token: this.state.token, fields: 'id,name,profile_pic' }, (response) => {
+      this.setState({ user: response })
+      console.log("user");
+      console.log(response);
+      document.getElementById("status").innerHTML = response.name;
     });
   }
 
@@ -102,7 +118,8 @@ class App extends Component {
   }
 
   handleFBGetFriends() {
-    FB.api("/me/friends", (response) => {
+    FB.api("/me/friendlists", (response) => {
+      console.log("friends")
       console.log(response)
     });
   }
@@ -116,15 +133,34 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <Navigation
-          login={this.handleFBLogin.bind(this)}
-          logout={this.handleFBLogout.bind(this)}
-          isLoged={this.state.loged}
-        />
-        <p id="status" />
-        <button id="testAPIbut" onClick={this.testGameAPI.bind(this)}>Test Game API</button>
-        <Content topGames={this.state.topGames} />
-        <Footer />
+        <Switch>
+          <Redirect exact from="/" to="/inicio"></Redirect>
+          <Route path="/inicio" render={(routeProps) =>
+            <div>
+              <Navigation
+                login={this.handleFBLogin.bind(this)}
+                logout={this.handleFBLogout.bind(this)}
+                isLoged={this.state.loged} />
+              <button id="testAPIbut" onClick={this.testGameAPI.bind(this)}>Test Game API</button>
+              <Content topGames={this.state.topGames} />
+              <Footer />
+            </div>
+          } />
+          {this.state.user ?
+            <Route path='/perfil' render={(routeProps) =>
+              <div>
+                <Navigation
+                  login={this.handleFBLogin.bind(this)}
+                  logout={this.handleFBLogout.bind(this)}
+                  isLoged={this.state.loged} />
+                <Perfil {...routeProps}
+                  user={this.state.user} />
+                <Footer />
+              </div>
+            } />
+            : ""}
+          <Route path="*" component={NotFound}></Route>
+        </Switch>
       </div>
     );
   }
