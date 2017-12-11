@@ -119,14 +119,6 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-<<<<<<< HEAD:imports/ui/containers/App.jsx
-        <Navigation
-          login={this.handleFBLogin.bind(this)}
-          logout={this.handleFBLogout.bind(this)}
-          isLoged={this.state.loged}
-        />
-        <p id="status" />
-=======
         <Navigation />
         <button
           className="btn-facebook"
@@ -135,7 +127,6 @@ class App extends Component {
           <span className="fa fa-facebook" /> Sign in with Facebook
         </button>
         <button id="testAPIbut" onClick={this.testGameAPI}>Test Game API</button>
->>>>>>> 80a8f004d6f75f0fd91826df88dc26458068ead4:imports/ui/App.jsx
         <Content />
         <Footer />
       </div>
