@@ -9,6 +9,8 @@ import Content from "./components/Content.jsx";
 
 import "./App.css";
 
+
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -46,6 +48,24 @@ class App extends Component {
         fjs.parentNode.insertBefore(js, fjs);
       })(document, "script", "facebook-jssdk");
     });
+  }
+
+  testGameAPI() {
+    //gameClient.platforms({fields: "*"}).then(response => {console.log(response.body)}).catch(error => {throw error;});
+    /*var proxyUrl = "https://cors-anywhere.herokuapp.com/",
+    targetUrl = "https://api-2445582011268.apicast.io/platforms/?fields=<name></name>"
+    HTTP.get(proxyUrl+targetUrl, {
+      headers: {
+        "user-key" : "3f33fc8eff221f5bf3df8d6e26704ca3",
+        "Accept" : "application/json"
+      }}, function(error, response) {
+        if (error) {
+      console.log(error);
+    } else {
+      console.log(response);
+    }
+      });*/
+      Meteor.call("games.getGameByName", {name: "zelda"}, (err, res)  => { if (err) {alert(err)} else {console.log("it works!")}});
   }
 
   statusChangeCallback(response) {
@@ -99,12 +119,23 @@ class App extends Component {
   render() {
     return (
       <div className="app">
+<<<<<<< HEAD:imports/ui/containers/App.jsx
         <Navigation
           login={this.handleFBLogin.bind(this)}
           logout={this.handleFBLogout.bind(this)}
           isLoged={this.state.loged}
         />
         <p id="status" />
+=======
+        <Navigation />
+        <button
+          className="btn-facebook"
+          id="btn-social-login"
+          onClick={this.handleFBLogin}>
+          <span className="fa fa-facebook" /> Sign in with Facebook
+        </button>
+        <button id="testAPIbut" onClick={this.testGameAPI}>Test Game API</button>
+>>>>>>> 80a8f004d6f75f0fd91826df88dc26458068ead4:imports/ui/App.jsx
         <Content />
         <Footer />
       </div>
