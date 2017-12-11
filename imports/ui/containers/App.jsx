@@ -16,7 +16,7 @@ class App extends Component {
     super(props);
     this.state = {
       loged: false,
-      "topGames": []
+      topGames: [{}]
     };
   }
 
@@ -58,9 +58,8 @@ class App extends Component {
             alert(err)
           } else 
             {
-              console.log(res.body[0].cover.url)
               this.setState({
-                "topGames": res.body
+                topGames: res.body
               });
               }
             }
@@ -133,7 +132,9 @@ class App extends Component {
   }
 }
 
-App.propTypes = {};
+App.propTypes = {
+  topGames: PropTypes.arrayOf(Object).isRequired
+};
 
 export default createContainer(() => {
   return {};

@@ -7,7 +7,8 @@ class Content extends Component {
   }
 
   render() {
-    console.log(this.props.topGames[0].cover.url);
+    var topGames = this.props.topGames;
+    console.log(topGames[0].cover.url);
     return (
       <div className="content">
         <div className="container">
@@ -115,6 +116,8 @@ class Content extends Component {
   }
 }
 
-Content.propTypes = {};
+Content.propTypes = {
+  
+};
 
 export default Content;
