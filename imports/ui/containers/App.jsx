@@ -16,7 +16,9 @@ class App extends Component {
     super(props);
     this.state = {
       loged: false,
-      topGames: [{}]
+      topGames: [],
+      user: {},
+      friends: []
     };
   }
 
@@ -32,9 +34,6 @@ class App extends Component {
           scope: "public_profile,user_friends,publish_actions"
         });
       };
-      console.log("fuck");
-      console.log("meeen" + result);
-      console.log("Loading fb api");
       // Load the SDK asynchronously
       ((d, s, id) => {
         const element = d.getElementsByTagName(s)[0];
@@ -52,26 +51,24 @@ class App extends Component {
   }
 
   testGameAPI() {
-    Meteor.call("games.getGameByName", {name: "zelda"}, 
-        (err, res)  => { 
-          if (err) {
-            alert(err)
-          } else 
-            {
-              this.setState({
-                topGames: res.body
-              });
-              }
-            }
-        );
+    Meteor.call("games.getGameByName", { name: "zelda" },
+      (err, res) => {
+        if (err) {
+          alert(err)
+        } else {
+          this.setState({
+            topGames: res.body
+          });
+        }
+      }
+    );
   }
 
   statusChangeCallback(response) {
-    console.log("statusChangeCallback");
-    console.log(response);
     if (response.status === "connected") {
-      this.testAPI();
+      this.getUser();
       this.setState({ loged: true });
+      +     this.handleFBGetFriends()
     } else if (response.status === "not_authorized") {
       console.log("Please log into this app.");
     } else {
@@ -80,20 +77,16 @@ class App extends Component {
     }
   }
 
-  testAPI() {
-    console.log("Welcome!  Fetching your information.... ");
-    FB.api("/me", function(response) {
-      console.log(response);
-      console.log("Successful login for: " + response.name);
+  getUser() {
+    FB.api("/me", (response) => {
+      this.setState({ user: response })
       document.getElementById("status").innerHTML =
         "Thanks for logging in, " + response.name + "!";
     });
   }
 
   checkLoginState() {
-    console.log("meeenod");
     FB.getLoginStatus(response => {
-      console.log(response);
       this.statusChangeCallback(response);
     });
   }
@@ -108,12 +101,17 @@ class App extends Component {
     FB.logout(this.checkLoginState.bind(this));
   }
 
-  componentWillMount() {
-    this.loadFbLoginApi();
-    this.testGameAPI();
+  handleFBGetFriends() {
+    FB.api("/me/friends", (response) => {
+      console.log(response)
+    });
   }
 
-  componentDidMount() {}
+  componentWillMount() {
+    this.loadFbLoginApi();
+  }
+
+  componentDidMount() { }
 
   render() {
     return (
@@ -124,8 +122,8 @@ class App extends Component {
           isLoged={this.state.loged}
         />
         <p id="status" />
-        <button id="testAPIbut" onClick={this.testGameAPI}>Test Game API</button>
-        <Content topGames = {this.state.topGames} />
+        <button id="testAPIbut" onClick={this.testGameAPI.bind(this)}>Test Game API</button>
+        <Content topGames={this.state.topGames} />
         <Footer />
       </div>
     );
@@ -133,7 +131,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  topGames: PropTypes.arrayOf(Object).isRequired
+
 };
 
 export default createContainer(() => {
