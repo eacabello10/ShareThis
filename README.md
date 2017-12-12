@@ -1,1 +1,3 @@
 # ShareThis
+Descripción:
+Cómo ejecutar:
