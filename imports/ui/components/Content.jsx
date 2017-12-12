@@ -5,7 +5,7 @@ class Content extends Component {
   constructor(props) {
     super(props);
   }
-
+//Se evidencia modularidad en el código, no logré ver la app desplegada
   render() {
     var topGames = this.props.topGames;
     return (
