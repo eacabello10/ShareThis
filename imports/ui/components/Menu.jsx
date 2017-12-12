@@ -5,7 +5,7 @@ class Menu extends Component {
     constructor(props){
         super(props);
     }
-
+//La aplicación cuenta con descripciones. Se puede mejorar el diseño y agregar tácticas de accesibilidad.
     render(){
         return (
             <div  className="menu col-md-2">
