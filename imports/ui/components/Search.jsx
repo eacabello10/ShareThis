@@ -1,3 +1,4 @@
+//este componente no es exportado ni renderiza algun elemento
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
