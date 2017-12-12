@@ -5,7 +5,7 @@ class Navigation extends Component {
   constructor(props) {
     super(props);
   }
-
+//Se evidencian las tácticas de usabilidad aplicadas a través del uso de aria-controls y aria-label
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
