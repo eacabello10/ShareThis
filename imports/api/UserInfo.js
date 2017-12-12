@@ -13,9 +13,12 @@ if (Meteor.isServer) {
 
 Meteor.methods({
     "user.create" (userID) {
+        //TODO
     },
     "user.find" (userId) {
+        //TODO
     },
     "user.addChat"(chatId){
+        //TODO
     }
 });
